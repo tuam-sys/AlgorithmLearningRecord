@@ -28,27 +28,51 @@
     // backtracking(candidates, target, 0, 0);
     // return res;
 
-    // Carl的解法  思路：使用used数组去重
+    // Carl的解法1  思路：使用used数组去重
+    // function backtracking(candidates, target, sum, startIndex) {
+    //     if(sum === target) {
+    //         res.push([...path]);
+    //         return;
+    //     }
+    //     for(let i = startIndex; i < candidates.length && sum + candidates[i] <= target; i++) {
+    //         if(i > 0 && used[i - 1] === false && candidates[i] === candidates[i - 1]) continue;
+    //         path.push(candidates[i]);
+    //         sum += candidates[i];
+    //         used[i] = true;
+    //         backtracking(candidates, target, sum, i + 1);
+    //         path.pop();
+    //         sum -= candidates[i];
+    //         used[i] = false;
+    //     }
+    // }
+
+    // let res = [];
+    // let path = [];
+    // let used = new Array(candidates.length).fill(false);
+    // candidates.sort((a, b) => a - b);
+    // backtracking(candidates, target, 0, 0);
+    // return res;
+
+    // Carl的解法2  思路：使用set数组去重
     function backtracking(candidates, target, sum, startIndex) {
         if(sum === target) {
             res.push([...path]);
             return;
         }
+        let set = new Set();
         for(let i = startIndex; i < candidates.length && sum + candidates[i] <= target; i++) {
-            if(i > 0 && used[i - 1] === false && candidates[i] === candidates[i - 1]) continue;
+            if(set.has(candidates[i])) continue;
             path.push(candidates[i]);
             sum += candidates[i];
-            used[i] = true;
+            set.add(candidates[i]);
             backtracking(candidates, target, sum, i + 1);
             path.pop();
             sum -= candidates[i];
-            used[i] = false;
         }
     }
 
     let res = [];
     let path = [];
-    let used = new Array(candidates.length).fill(false);
     candidates.sort((a, b) => a - b);
     backtracking(candidates, target, 0, 0);
     return res;
